@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shops - Super Mall</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: "Poppins", sans-serif;
+    }
+    .shop-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: none;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .shop-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+    .image-wrapper {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      position: relative;
+    }
+    .shop-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .shop-card:hover .shop-img {
+      transform: scale(1.05);
+    }
+    .offer-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background-color: #ff4757;
+      color: white;
+      font-weight: bold;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+    .filter-box {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="../index.html">🏬 Super Mall</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="offers.html">Offers</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Title -->
+  <div class="text-center my-4">
+    <h1 class="fw-bold">🛍️ Explore All Shops</h1>
+    <p class="text-muted">Find your favorite stores and check out their latest offers.</p>
+  </div>
+
+  <!-- 🔍 Filter Section -->
+  <div class="container">
+    <div class="filter-box">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <select id="categoryFilter" class="form-select">
+            <option value="">All Categories</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Food">Food</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Entertainment">Entertainment</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <select id="floorFilter" class="form-select">
+            <option value="">All Floors</option>
+            <option value="Ground Floor">Ground Floor</option>
+            <option value="1st Floor">1st Floor</option>
+            <option value="2nd Floor">2nd Floor</option>
+          </select>
+        </div>
+        <div class="col-md-4 d-flex">
+          <input id="searchInput" type="text" class="form-control me-2" placeholder="🔎 Search shop name...">
+          <button id="filterBtn" class="btn btn-primary">Apply Filter</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shops Grid -->
+  <div class="container">
+    <div class="row" id="shopsContainer"></div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="../firebaseConfig.js"></script>
+
+  <script>
+    const shopsContainer = document.getElementById("shopsContainer");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const floorFilter = document.getElementById("floorFilter");
+    const searchInput = document.getElementById("searchInput");
+    const filterBtn = document.getElementById("filterBtn");
+
+    let allShops = [];
+
+    // Fetch all shops from Firebase
+    firebase.database().ref("shops").on("value", (snapshot) => {
+      allShops = [];
+      shopsContainer.innerHTML = "";
+
+      snapshot.forEach((child) => {
+        const shop = child.val();
+        shop.id = child.key; // ✅ store the key
+        allShops.push(shop);
+      });
+
+      renderShops(allShops);
+    });
+
+    // Render shops
+    function renderShops(shopList) {
+      shopsContainer.innerHTML = "";
+      shopList.forEach((shop) => {
+        const imageUrl = shop.image || "https://via.placeholder.com/400x225?text=Shop+Image";
+
+        const col = document.createElement("div");
+        col.className = "col-lg-4 col-md-6 mb-4";
+
+        col.innerHTML = `
+          <div class="card shop-card shadow-sm">
+            <div class="image-wrapper">
+              ${shop.offer && shop.offer !== "No current offers" ? `<span class="offer-badge">${shop.offer}</span>` : ""}
+              <img src="${imageUrl}" alt="${shop.name}" class="shop-img">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">${shop.name}</h5>
+              <p class="text-muted mb-1">Category: ${shop.category}</p>
+              <p class="text-muted mb-1">Floor: ${shop.floor}</p>
+              <p class="fw-semibold text-success">${shop.offer || "No current offers"}</p>
+              <a href="shop-details.html?shopId=${shop.id}" class="btn btn-outline-primary mt-2">View Details</a>
+            </div>
+          </div>
+        `;
+        shopsContainer.appendChild(col);
+      });
+    }
+
+    // Filter shops
+    filterBtn.addEventListener("click", () => {
+      const categoryValue = categoryFilter.value;
+      const floorValue = floorFilter.value;
+      const searchValue = searchInput.value.toLowerCase();
+
+      const filteredShops = allShops.filter(shop => {
+        const matchesCategory = !categoryValue || shop.category === categoryValue;
+        const matchesFloor = !floorValue || shop.floor === floorValue;
+        const matchesSearch = !searchValue || shop.name.toLowerCase().includes(searchValue);
+        return matchesCategory && matchesFloor && matchesSearch;
+      });
+
+      renderShops(filteredShops);
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
