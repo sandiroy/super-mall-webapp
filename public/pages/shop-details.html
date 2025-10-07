@@ -8,7 +8,9 @@
 
   <style>
     body {
-      background-color: #f8f9fa;
+      background: url('../shoppro.jpg') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: blur(2px);
       font-family: "Poppins", sans-serif;
     }
     .shop-banner {
@@ -19,9 +21,13 @@
     }
     .product-card {
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border: none;
+      height: 440px;
       border-radius: 10px;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: rgb(213, 216, 216);
     }
     .product-card:hover {
       transform: translateY(-5px);
@@ -34,6 +40,26 @@
     }
     .back-btn {
       margin-top: 20px;
+    }
+    .product-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      white-space: nowrap;         /* single line */
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .product-features {
+      font-size: 0.9rem;
+      color: #555;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;       /* show only 2 lines */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 3em;             /* ensures consistent height */
+      line-height: 1.5em;          /* adjust based on design */
+      margin-bottom: 0;
+      word-break: break-word;
     }
   </style>
 </head>
@@ -102,14 +128,14 @@
             const productImg = product.image || "https://via.placeholder.com/300x300?text=Product";
             col.innerHTML = `
               <div class="card product-card shadow-sm">
-                <img src="${productImg}" alt="${product.name}" class="product-img">
-                <div class="card-body text-center">
-                  <h5 class="card-title">${product.name}</h5>
-                  <p class="fw-semibold text-success">${product.price}</p>
-                  <p class="text-muted small">${product.features || ""}</p>
-                </div>
+              <img src="${productImg}" alt="${product.name}" class="product-img">
+              <div class="card-body text-center">
+                <h5 class="card-title">${product.name}</h5>
+                <p class="fw-semibold text-success">${product.price}</p>
+                <p class="product-features">${product.features || ""}</p>
               </div>
-            `;
+            </div>
+          `;
             productsContainer.appendChild(col);
           });
         } else {
