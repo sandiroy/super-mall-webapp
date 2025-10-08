@@ -3,92 +3,253 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Super Mall - Welcome</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body class="bg-light">
+  <title>Super Mall</title>
 
-  <!-- 🌐 Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="#">🏬 Super Mall</a>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Gupter:wght@500&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    /* Background Animation */
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(-45deg, #f093fb, #f5576c, #4facfe, #43e97b);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: white;
+      overflow-x: hidden;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Navbar */
+    .navbar {
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+    .navbar-brand {
+      font-weight: 700;
+      color: #fff !important;
+      font-size: 1.6rem;
+    }
+    .nav-link {
+      color: #fff !important;
+      margin-right: 20px;
+      transition: color 0.3s ease;
+    }
+    .nav-link:hover {
+      color: #43e97b !important;
+    }
+
+    /* Header Section */
+    header {
+      text-align: center;
+      padding: 100px 20px 50px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+    header p {
+      font-size: 1.2rem;
+      color: #f0f0f0;
+      margin-top: 10px;
+    }
+    .btn-explore {
+      background: #fff;
+      color: #333;
+      font-weight: 600;
+      padding: 12px 30px;
+      border-radius: 30px;
+      border: none;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+    .btn-explore:hover {
+      background: #43e97b;
+      color: #fff;
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Categories Section */
+    .categories {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .categories h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+    .category-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .category {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      width: 220px;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.4s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(8px);
+    }
+    .category:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Features Section */
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 50px 20px;
+      gap: 20px;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 30px 20px;
+      width: 280px;
+      text-align: center;
+      color: #fff;
+      transition: transform 0.4s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+    .card h3 {
+      font-family: "Gupter", serif;
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+    .card p {
+      font-size: 0.95rem;
+      color: #eaeaea;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+      transition: color 0.3s;
+    }
+    footer a:hover {
+      color: #43e97b;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.3rem;
+      }
+      .features, .category-grid {
+        flex-direction: column;
+        align-items: center;
+      }
+      .card, .category {
+        width: 85%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand" href="index.html">Super Mall</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
           <li class="nav-item"><a class="nav-link" href="pages/offers.html">Offers</a></li>
-          <li class="nav-item"><a class="nav-link" href="pages/login.html">Login</a></li>
+          <li class="nav-item"><a class="nav-link" href="pages/admin.html">Admin Login</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- 🖼️ Hero Section -->
-  <header class="text-center bg-dark text-white py-5">
-    <h1 class="display-4 fw-bold">Welcome to Super Mall</h1>
-    <p class="lead">Your one-stop destination for shopping, dining, and fun!</p>
-
-    <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
-      <a href="pages/offers.html" class="btn btn-success btn-lg">
-        💸 View Current Offers
-      </a>
-      <a href="pages/shop.html" class="btn btn-primary btn-lg">
-        🏪 Explore All Shops
-      </a>
-    </div>
+  <!-- Header Section -->
+  <header>
+    <h1>Welcome to Super Mall</h1>
+    <p>Your one-stop destination for amazing deals and shops</p>
+    <a href="pages/shop.html"><button class="btn-explore">Explore Shops</button></a>
   </header>
 
-  <!-- 🏢 About Section -->
-  <section class="container my-5 text-center">
-    <h2 class="mb-4">Discover the Best Deals Around</h2>
-    <p class="lead text-muted">
-      Super Mall connects top brands and local shops under one roof. Enjoy exclusive offers, track your favorite stores,
-      and explore new arrivals across all categories.
-    </p>
-  </section>
-
-  <!-- 🛒 Categories Section -->
-  <section class="bg-light py-5">
-    <div class="container">
-      <h2 class="text-center mb-4">Popular Categories</h2>
-      <div class="row text-center">
-        <div class="col-md-3 mb-3">
-          <div class="card shadow-sm p-3">
-            <h5>👕 Fashion</h5>
-            <p class="text-muted">Trendy apparel & accessories</p>
-          </div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card shadow-sm p-3">
-            <h5>🍔 Food</h5>
-            <p class="text-muted">Delicious bites & restaurants</p>
-          </div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card shadow-sm p-3">
-            <h5>📱 Electronics</h5>
-            <p class="text-muted">Latest gadgets & devices</p>
-          </div>
-        </div>
-        <div class="col-md-3 mb-3">
-          <div class="card shadow-sm p-3">
-            <h5>🎮 Entertainment</h5>
-            <p class="text-muted">Fun for the whole family</p>
-          </div>
-        </div>
-      </div>
+  <!-- Popular Categories -->
+  <section class="categories">
+    <h2>Popular Categories</h2>
+    <div class="category-grid">
+      <div class="category" onclick="redirectToCategory('Fashion')">👗 Fashion</div>
+      <div class="category" onclick="redirectToCategory('Food')">🍔 Food</div>
+      <div class="category" onclick="redirectToCategory('Electronics')">💻 Electronics</div>
+      <div class="category" onclick="redirectToCategory('Movies')">🎬 Entertainment</div>
     </div>
   </section>
 
-  <!-- 📍 Footer -->
-  <footer class="bg-dark text-white text-center py-3">
-    <p class="mb-0">&copy; 2025 Super Mall. All Rights Reserved.</p>
-    <small>Built with ❤️ using HTML, CSS, JS, and Firebase</small>
+  <!-- Feature Cards -->
+  <section class="features">
+    <div class="card">
+      <h3>🛍️ Multiple Stores</h3>
+      <p>Discover a variety of brands and categories in one place.</p>
+    </div>
+    <div class="card">
+      <h3>💳 Secure Payments</h3>
+      <p>Enjoy safe transactions with our trusted payment gateway.</p>
+    </div>
+    <div class="card">
+      <h3>🚚 Fast Delivery</h3>
+      <p>Get your orders delivered quickly and safely to your doorstep.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Super Mall | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Redirect to shop.html with category filter
+    function redirectToCategory(category) {
+      window.location.href = `pages/shop.html?category=${encodeURIComponent(category)}`;
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Libertinus+Math&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Outfit:wght@100..900&family=Smooch+Sans:wght@100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Varela+Round&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Varela+Round&display=swap');
     body {
       background: linear-gradient(135deg, #e03e7c 0%, #88ccc9 50%, #fce7f3 100%);
       min-height: 100vh;
@@ -80,7 +80,7 @@
 
   <!-- Page Title -->
   <div class="text-center my-4">
-    <h1 class="fw-bold">🛍️ Explore All Shops</h1>
+    <h1 class="fw-bold" id="pageTitle">🛍️ Explore All Shops</h1>
     <p class="text-muted">Find your favorite stores and check out their latest offers.</p>
   </div>
 
@@ -133,8 +133,22 @@
     const floorFilter = document.getElementById("floorFilter");
     const searchInput = document.getElementById("searchInput");
     const filterBtn = document.getElementById("filterBtn");
+    const pageTitle = document.getElementById("pageTitle");
 
     let allShops = [];
+
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryFromURL = urlParams.get("category");
+
+    if (categoryFromURL) {
+      categoryFilter.value = capitalizeFirstLetter(categoryFromURL);
+      pageTitle.textContent = `🛍️ ${capitalizeFirstLetter(categoryFromURL)} Shops`;
+    }
+
+    function capitalizeFirstLetter(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
 
     // Fetch all shops from Firebase
     firebase.database().ref("shops").on("value", (snapshot) => {
@@ -147,15 +161,25 @@
         allShops.push(shop);
       });
 
-      renderShops(allShops);
+      // ✅ Apply category filter from URL initially
+      if (categoryFromURL) {
+        const filtered = allShops.filter(shop => shop.category.toLowerCase() === categoryFromURL.toLowerCase());
+        renderShops(filtered);
+      } else {
+        renderShops(allShops);
+      }
     });
 
     // Render shops
     function renderShops(shopList) {
       shopsContainer.innerHTML = "";
+      if (shopList.length === 0) {
+        shopsContainer.innerHTML = `<p class="text-center text-muted">No shops found.</p>`;
+        return;
+      }
+
       shopList.forEach((shop) => {
         const imageUrl = shop.image || "https://via.placeholder.com/400x225?text=Shop+Image";
-
         const col = document.createElement("div");
         col.className = "col-lg-4 col-md-6 mb-4";
 
@@ -178,22 +202,21 @@
       });
     }
 
-    // Filter shops
+    // Manual filter button
     filterBtn.addEventListener("click", () => {
-  const categoryValue = categoryFilter.value;
-  const floorValue = floorFilter.value;
-  const searchValue = searchInput.value.toLowerCase();
+      const categoryValue = categoryFilter.value;
+      const floorValue = floorFilter.value;
+      const searchValue = searchInput.value.toLowerCase();
 
-  const filteredShops = allShops.filter(shop => {
-    const matchesCategory = !categoryValue || shop.category === categoryValue;
-    const matchesFloor = !floorValue || shop.floor === Number(floorValue); // ✅ Fixed comparison
-    const matchesSearch = !searchValue || shop.name.toLowerCase().includes(searchValue);
-    return matchesCategory && matchesFloor && matchesSearch;
-  });
+      const filteredShops = allShops.filter(shop => {
+        const matchesCategory = !categoryValue || shop.category === categoryValue;
+        const matchesFloor = !floorValue || shop.floor === Number(floorValue);
+        const matchesSearch = !searchValue || shop.name.toLowerCase().includes(searchValue);
+        return matchesCategory && matchesFloor && matchesSearch;
+      });
 
-  renderShops(filteredShops);
-});
-
+      renderShops(filteredShops);
+    });
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
