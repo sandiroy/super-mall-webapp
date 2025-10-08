@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&display=swap');
     body {
       background: url('../shoppro.jpg') no-repeat center center fixed;
       background-size: cover;
@@ -44,9 +45,10 @@
     .product-name {
       font-size: 1.1rem;
       font-weight: 600;
-      white-space: nowrap;         /* single line */
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      font-family: "Gupter", serif;
     }
     .product-features {
       font-size: 0.9rem;
@@ -60,6 +62,53 @@
       line-height: 1.5em;          /* adjust based on design */
       margin-bottom: 0;
       word-break: break-word;
+    }
+    @media (max-width: 992px) {
+      .product-card {
+        height: 400px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .product-card {
+        height: 360px;
+      }
+      .product-img {
+        aspect-ratio: 4/3;
+      }
+      .product-name {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .product-card {
+        height: auto;
+      }
+      .product-img {
+        width: 100%;
+        height: auto;
+      }
+      .product-name {
+        font-size: 0.95rem;
+      }
+      .product-features {
+        font-size: 0.85rem;
+      }
+    }
+    .loader {
+      border: 6px solid #f3f3f3; /* Light grey */
+      border-top: 6px solid #3498db; /* Blue color */
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin: 50px auto; /* Center horizontally with space */
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -80,7 +129,8 @@
     <a href="shop.html" class="btn btn-secondary back-btn">⬅ Back to Shops</a>
 
     <div id="shopDetails" class="text-center my-4">
-      <h1 class="fw-bold">Loading...</h1>
+      <div class="loader"></div>
+      <p class="text-muted mt-3">Loading shop details</p>
     </div>
 
     <div id="productsContainer" class="row"></div>
@@ -130,7 +180,7 @@
               <div class="card product-card shadow-sm">
               <img src="${productImg}" alt="${product.name}" class="product-img">
               <div class="card-body text-center">
-                <h5 class="card-title">${product.name}</h5>
+                <h5 class="product-name">${product.name}</h5>
                 <p class="fw-semibold text-success">${product.price}</p>
                 <p class="product-features">${product.features || ""}</p>
               </div>
