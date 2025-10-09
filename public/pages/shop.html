@@ -9,7 +9,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Gupter:wght@400;500;700&family=Varela+Round&display=swap');
     body {
-      background: linear-gradient(135deg, #e03e7c 0%, #88ccc9 50%, #fce7f3 100%);
+      background: linear-gradient(135deg, #e03e7c 0%, #b769db 50%, #48b3dd 100%);
       min-height: 100vh;
       font-family: "Varela Round", sans-serif;
     }
@@ -53,11 +53,55 @@
     }
     .filter-box {
       background: #dbcaca;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 25px;
+      padding: 20px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
     }
+
+    .form-select,
+    .form-control {
+      height: 58px !important;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .form-select:focus,
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.4);
+    }
+
+    .input-group .btn {
+      border-radius: 0 10px 10px 0;
+      font-weight: 600;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .input-group .btn:hover {
+      background-color: #0056b3;
+      transform: translateY(-2px);
+    }
+
+    .form-floating label {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    @media (max-width: 768px) {
+      .form-select,
+      .form-control {
+        height: 52px !important;
+        font-size: 0.95rem;
+      }
+
+      .filter-box {
+        padding: 15px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -65,7 +109,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="../index.html">🏬 Super Mall</a>
+      <a class="navbar-brand fw-bold" href="../index.html">Super Mall</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -85,10 +129,12 @@
   </div>
 
   <!-- 🔍 Filter Section -->
-  <div class="container">
-    <div class="filter-box">
-      <div class="row g-3">
-        <div class="col-md-4">
+<div class="container">
+  <div class="filter-box">
+    <div class="row g-3 align-items-center">
+      <!-- Category Filter -->
+      <div class="col-md-4">
+        <div class="form-floating">
           <select id="categoryFilter" class="form-select">
             <option value="">All Categories</option>
             <option value="Fashion">Fashion</option>
@@ -99,8 +145,13 @@
             <option value="Shoe">Shoes</option>
             <option value="Fitness accessories">Fitness accessories</option>
           </select>
+          <label for="categoryFilter">Category</label>
         </div>
-        <div class="col-md-4">
+      </div>
+
+      <!-- Floor Filter -->
+      <div class="col-md-4">
+        <div class="form-floating">
           <select id="floorFilter" class="form-select">
             <option value="">All Floors</option>
             <option value="1">Ground Floor</option>
@@ -108,14 +159,21 @@
             <option value="3">2nd Floor</option>
             <option value="4">3rd Floor</option>
           </select>
+          <label for="floorFilter">Floor</label>
         </div>
-        <div class="col-md-4 d-flex">
-          <input id="searchInput" type="text" class="form-control me-2" placeholder="🔎 Search shop name...">
-          <button id="filterBtn" class="btn btn-primary">Apply Filter</button>
+      </div>
+
+      <!-- Search + Button -->
+      <div class="col-md-4">
+        <div class="input-group">
+          <input id="searchInput" type="text" class="form-control" placeholder="🔎 Search shop name...">
+          <button id="filterBtn" class="btn btn-primary">Apply</button>
         </div>
       </div>
     </div>
   </div>
+</div>
+
 
   <!-- Shops Grid -->
   <div class="container">
@@ -137,7 +195,7 @@
 
     let allShops = [];
 
-    
+
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFromURL = urlParams.get("category");
 
